@@ -57,6 +57,22 @@ Migrations for 'students':
 ```bash
 python manage.py migrate
 ```
+Expected output:
+```
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  ...
+  Applying students.0001_initial... OK
+```
 
 ## Checkpoint
 Confirm the real table exists:
@@ -65,6 +81,24 @@ python manage.py dbshell
 .tables
 .schema students_student
 .quit
+```
+Expected output:
+```
+# In dbshell, running .tables should show:
+android_metadata  auth_group                  auth_user_groups
+auth_group_permissions  auth_user_user_permissions  django_content_type
+django_migrations       django_session          students_student
+
+# Running .schema students_student should show:
+CREATE TABLE IF NOT EXISTS "students_student" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "first_name" varchar(100) NOT NULL,
+    "last_name" varchar(100) NOT NULL,
+    "email" varchar(254) NOT NULL UNIQUE,
+    "grade" integer NOT NULL,
+    "date_of_birth" date NOT NULL,
+    "registration_date" datetime NOT NULL
+);
 ```
 You should see a `students_student` table with a column for every field you wrote.
 
@@ -84,6 +118,21 @@ You should see a `students_student` table with a column for every field you wrot
 Add a `sex` field to the model (`CharField` with `choices` and a `default`),
 then run `makemigrations` and `migrate` again. Watch what Django asks you when
 you add a non-nullable field to a model that already has rows in its table.
+
+Expected output when running `makemigrations`:
+```
+Migrations for 'students':
+  students/migrations/0002_student_sex.py
+    - Add field sex to student
+```
+
+Expected output when running `migrate`:
+```
+Operations to perform:
+  Target specific migration: 0002_student_sex, from students
+Running migrations:
+  Applying students.0002_student_sex... OK
+```
 
 ---
 ⬅ [Previous: 00 - Setup](../00-setup/PRACTICAL.md) | ➡ [Next: 02 - Admin Panel](../02-admin-panel/PRACTICAL.md)

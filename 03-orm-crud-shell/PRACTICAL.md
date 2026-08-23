@@ -17,6 +17,14 @@ write in later lessons.
 ```bash
 python manage.py shell
 ```
+Expected output:
+```
+Python 3.10.x (default, ...)
+Type 'copyright', 'credits' or 'license' for more information
+IPython 8.x.x -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]:
+```
 
 **2. Create**
 ```python
@@ -33,6 +41,17 @@ Student.objects.create(first_name="Bereket", last_name="Alemayehu",
                         email="bereket@school.com", grade=7,
                         date_of_birth="2012-03-02")
 ```
+Expected output:
+```python
+# After each create, you should see:
+In [2]: s.save()
+
+In [3]: 
+
+# Or for create():
+In [2]: Student.objects.create(...)
+Out[2]: <Student: Almaz Tadesse>
+```
 
 **3. Read**
 ```python
@@ -40,6 +59,20 @@ Student.objects.all()                          # every student
 Student.objects.get(id=1)                       # exactly one
 Student.objects.filter(grade=9)                  # matching subset
 Student.objects.all().order_by('last_name')      # sorted
+```
+Expected output:
+```python
+In [3]: Student.objects.all()
+Out[3]: <QuerySet [<Student: Almaz Tadesse>, <Student: Bereket Alemayehu>]>
+
+In [4]: Student.objects.get(id=1)
+Out[4]: <Student: Almaz Tadesse>
+
+In [5]: Student.objects.filter(grade=9)
+Out[5]: <QuerySet [<Student: Almaz Tadesse>]>
+
+In [6]: Student.objects.all().order_by('last_name')
+Out[6]: <QuerySet [<Student: Almaz Tadesse>, <Student: Bereket Alemayehu>]>
 ```
 
 **4. Update**
@@ -50,6 +83,21 @@ student.save()
 
 Student.objects.filter(grade=9).update(grade=10)  # bulk update
 ```
+Expected output:
+```python
+In [7]: student = Student.objects.get(id=1)
+
+In [8]: student.grade = 10
+
+In [9]: student.save()
+
+In [10]: Student.objects.filter(grade=9).update(grade=10)
+Out[10]: 1  # Number of rows updated
+
+# Verify the update:
+In [11]: Student.objects.get(id=1).grade
+Out[11]: 10
+```
 
 **5. Delete**
 ```python
@@ -57,6 +105,20 @@ student = Student.objects.get(id=2)
 student.delete()
 
 Student.objects.filter(grade=9).delete()          # ⚠ bulk delete — filter carefully
+```
+Expected output:
+```python
+In [12]: student = Student.objects.get(id=2)
+
+In [13]: student.delete()
+Out[13]: (1, {'students.Student': 1})  # (number of objects deleted, dict with counts per model)
+
+In [14]: Student.objects.filter(grade=9).delete()
+Out[14]: (1, {'students.Student': 1})
+
+# Verify deletion:
+In [15]: Student.objects.count()
+Out[15]: 0  # Or fewer than before
 ```
 
 Exit with `exit()` when done.
@@ -109,6 +171,29 @@ and `Student.objects.filter(grade=10)` should return only the ones you updated.
 Write a shell snippet that finds every student below grade 5, prints their full
 names, then bulk-updates them all to grade 5. Do it in two steps — print first,
 update second — so you can see what you're about to change before you change it.
+
+Example solution and expected output:
+```python
+# Step 1: Print students below grade 5
+low_grade_students = Student.objects.filter(grade__lt=5)
+for s in low_grade_students:
+    print(s.full_name())
+
+# Expected output:
+# Bereket Alemayehu
+# Chala Girma
+
+# Step 2: Update them all to grade 5
+result = Student.objects.filter(grade__lt=5).update(grade=5)
+print(f"Updated {result} students")
+
+# Expected output:
+# Updated 2 students
+
+# Verify:
+Student.objects.filter(grade=5).count()
+# Expected output: 2 (or more, if you had more students below grade 5)
+```
 
 ---
 ⬅ [Previous: 02 - Admin Panel](../02-admin-panel/PRACTICAL.md) | ➡ [Next: 04 - Views & URLs](../04-views-urls/PRACTICAL.md)

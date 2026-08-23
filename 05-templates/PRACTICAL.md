@@ -91,6 +91,17 @@ Visit `http://127.0.0.1:8000/` — you should see a real HTML table listing
 every student currently in the database, styled by nothing but the browser
 default (that's fine, this lesson is about data flow, not design).
 
+Expected output in browser:
+```html
+Student Registration System
+All Students
+
+Name          | Grade | Email
+-------------|-------|-------------------
+Almaz Tadesse | 9     | almaz@school.com
+Bereket Alemayehu | 7  | bereket@school.com
+```
+
 ## Common mistakes
 - `{% url 'register_student' %}` in `base.html` will error with
   `NoReverseMatch` until that URL name exists — this page will briefly break
@@ -104,6 +115,14 @@ default (that's fine, this lesson is about data flow, not design).
 ## Exercise
 Add a column to the table for `registration_date`, formatted with Django's
 `date` filter: `{{ student.registration_date|date:"M d, Y" }}`.
+
+Expected output in browser:
+```html
+Name          | Grade | Email              | Registration Date
+-------------|-------|-------------------|-------------------
+Almaz Tadesse | 9     | almaz@school.com  | Aug 23, 2024
+Bereket Alemayehu | 7  | bereket@school.com | Aug 23, 2024
+```
 
 ---
 ⬅ [Previous: 04 - Views & URLs](../04-views-urls/PRACTICAL.md) | ➡ [Next: 06 - CRUD in the Browser](../06-crud-in-browser/PRACTICAL.md)

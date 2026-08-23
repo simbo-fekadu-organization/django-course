@@ -55,9 +55,20 @@ urlpatterns = [
 ```bash
 python manage.py runserver
 ```
+Expected output:
+```
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 23, 2024 - 15:30:00
+Django version 5.x, using settings 'student_registration_system.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+```
 
 ## Checkpoint
-Visit `http://127.0.0.1:8000/hello/` — the browser should show the plain text
+Visit `http://127.0.0.1:8000/hello/` — you should see the plain text
 "Hello, World!" (not a template, not HTML — just text, on purpose, so the
 view/URL connection is easy to see clearly).
 
@@ -72,6 +83,23 @@ view/URL connection is easy to see clearly).
 Add a second view, `about`, that returns your name and today's date as plain
 text, and wire it up at `/about/` the same way. This is just reps on the
 view → URL → browser loop before templates get involved.
+
+Example solution:
+```python
+# In students/views.py
+from datetime import date
+
+def about(request):
+    return HttpResponse(f"This app was made by [Your Name]. Today is {date.today()}.")
+
+# In students/urls.py
+path('about/', views.about, name='about'),
+```
+
+Expected output in browser when visiting `http://127.0.0.1:8000/about/`:
+```
+This app was made by [Your Name]. Today is 2024-08-23.
+```
 
 ---
 ⬅ [Previous: 03 - ORM & CRUD in the Shell](../03-orm-crud-shell/PRACTICAL.md) | ➡ [Next: 05 - Templates](../05-templates/PRACTICAL.md)

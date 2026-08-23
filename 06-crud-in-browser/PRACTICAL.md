@@ -106,10 +106,25 @@ urlpatterns = [
 ```bash
 python manage.py runserver
 ```
+Expected output:
+```
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 23, 2024 - 15:30:00
+Django version 5.x, using settings 'student_registration_system.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+```
+
 1. `http://127.0.0.1:8000/` → shows the student list
 2. Click **Register a Student** → fill the form → Submit
+   - Expected: Form submits, redirects to list, new student appears
+   - Expected: Green success message at top: "Student Almaz Tadesse added!"
 3. Redirects back to the list → the new student is there (Create + Read)
 4. Click **Delete** next to a row → it disappears (Delete)
+   - Expected: Green success message: "Student deleted."
 5. Open `/admin/` in a second tab → same data, same table — the admin, the
    shell, and this web page are three different doors into the exact same
    database.
@@ -128,6 +143,49 @@ python manage.py runserver
 Build `edit.html` and an `edit_student(request, student_id)` view using the
 same pattern as `register_student`, except the form should load with the
 existing student's data already filled in. This completes the CRUD set.
+
+Example solution:
+```python
+# In students/views.py
+def edit_student(request, student_id):
+    student = Student.objects.get(id=student_id)
+    if request.method == 'POST':
+        student.first_name = request.POST['first_name']
+        student.last_name = request.POST['last_name']
+        student.email = request.POST['email']
+        student.grade = int(request.POST['grade'])
+        student.date_of_birth = request.POST['dob']
+        student.save()
+        messages.success(request, f"Student {student.full_name()} updated!")
+        return redirect('student_list')
+    return render(request, 'edit.html', {'student': student})
+
+# In students/urls.py
+path('edit/<int:student_id>/', views.edit_student, name='edit_student'),
+```
+
+```html
+<!-- In students/templates/edit.html -->
+{% extends 'base.html' %}
+{% block content %}
+<h2>Edit Student</h2>
+<form method="POST">
+  {% csrf_token %}
+  <input type="text" name="first_name" value="{{ student.first_name }}" required><br>
+  <input type="text" name="last_name" value="{{ student.last_name }}" required><br>
+  <input type="email" name="email" value="{{ student.email }}" required><br>
+  <input type="number" name="grade" value="{{ student.grade }}" required><br>
+  <input type="date" name="dob" value="{{ student.date_of_birth }}" required><br>
+  <button type="submit">Save Changes</button>
+</form>
+{% endblock %}
+```
+
+Expected behavior:
+- Click on an "Edit" link (you'll need to add this to student_list.html)
+- Form should show pre-filled with the student's current data
+- After saving, you should see a success message: "Student Almaz Tadesse updated!"
+- The student list should show the updated information
 
 ---
 ⬅ [Previous: 05 - Templates](../05-templates/PRACTICAL.md) | ⬆ [Course home](../README.md)
