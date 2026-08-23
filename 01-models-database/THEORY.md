@@ -1,0 +1,198 @@
+# Theory: Models & Database in Django
+
+## What is a Model?
+
+In Django, a **model** is a Python class that serves as the single, definitive source of information about your data. It contains the essential fields and behaviors of the data you're storing. Each model maps to a single database table.
+
+**In our Student Registration System:**
+```python
+class Student(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    grade = models.IntegerField()
+    date_of_birth = models.DateField()
+    registration_date = models.DateTimeField(auto_now_add=True)
+```
+
+This `Student` model represents a single database table called `students_student` (Django uses the format `appname_modelname` in lowercase).
+
+## The Model-To-Database Pipeline
+
+```
+Python Model (models.py)
+        ↓
+    Django ORM
+        ↓
+  Migration Files (0001_initial.py, etc.)
+        ↓
+    Database (SQLite, PostgreSQL, MySQL, etc.)
+        ↓
+  Database Table (students_student)
+```
+
+This pipeline is what makes Django "batteries-included" for database operations. You define your data structure in Python, and Django handles the SQL for you.
+
+## Field Types: The Building Blocks
+
+Each attribute in your model is a **field**. Django provides many field types, each with specific validation and database storage behavior.
+
+### Common Field Types in Our Student Registration System
+
+| Field Type | Python Type | Database Type | Example | Purpose |
+|------------|-------------|----------------|---------|---------|
+| `CharField` | `str` | `VARCHAR` | `first_name` | Short-to-medium length strings |
+| `EmailField` | `str` | `VARCHAR` | `email` | Email addresses with validation |
+| `IntegerField` | `int` | `INTEGER` | `grade` | Whole numbers |
+| `DateField` | `datetime.date` | `DATE` | `date_of_birth` | Dates without time |
+| `DateTimeField` | `datetime.datetime` | `DATETIME` | `registration_date` | Dates with time |
+
+### Field Options
+
+Fields accept various options that control their behavior:
+
+| Option | Example | Purpose |
+|--------|---------|---------|
+| `max_length` | `max_length=100` | Maximum length for string fields (required for CharField) |
+| `unique` | `unique=True` | Ensures no duplicate values in the column |
+| `null` | `null=True` | Allows NULL in the database (default: False) |
+| `blank` | `blank=True` | Allows empty values in forms (default: False) |
+| `default` | `default='Unknown'` | Default value if none provided |
+| `auto_now_add` | `auto_now_add=True` | Automatically set to now on creation |
+| `auto_now` | `auto_now=True` | Automatically set to now on every save |
+
+**In our Student model:**
+- `email = models.EmailField(unique=True)` - Ensures no two students can have the same email
+- `registration_date = models.DateTimeField(auto_now_add=True)` - Automatically records when a student was registered
+
+## The `__str__` Method: Human-Readable Representation
+
+Every model should define a `__str__` method. This controls how the object is displayed in:
+- The Django admin interface
+- The Django shell
+- Anywhere the object needs to be converted to a string
+
+```python
+def __str__(self):
+    return f"{self.first_name} {self.last_name}"
+```
+
+Without this, Django would display `<Student: Student object (1)>`. With it, you see "Almaz Tadesse" — much more useful!
+
+## Custom Methods
+
+You can add any Python method to your models. These are called **model methods** and provide business logic related to your data.
+
+```python
+def full_name(self):
+    return f"{self.first_name} {self.last_name}"
+```
+
+In our Student Registration System, this method combines first and last name, which we use in templates and the admin interface.
+
+## Migrations: Version Control for Your Database
+
+### The Problem
+
+Database schemas evolve as your application grows. You might:
+- Add a new field to store student phone numbers
+- Change a field from optional to required
+- Rename a field
+
+Without a system to manage these changes, you'd face problems like:
+- Different developers have different database states
+- Production database doesn't match your code
+- Manual SQL errors when deploying changes
+
+### Django's Solution: Migrations
+
+Django's migration system tracks changes to your models and can:
+1. Generate SQL to transform your database from one state to another
+2. Apply those changes in a consistent order
+3. Roll back changes if needed
+
+### The Migration Workflow
+
+```
+1. Edit models.py (change your model)
+   ↓
+2. python manage.py makemigrations (create migration file)
+   ↓
+3. python manage.py migrate (apply to database)
+```
+
+**Rule to memorize:** *change a model → `makemigrations` → `migrate`. Every time.*
+
+### What's in a Migration File?
+
+When you run `makemigrations`, Django creates a file in `students/migrations/` (e.g., `0001_initial.py`). This file contains:
+
+```python
+# Generated by Django
+from django.db import migrations, models
+
+class Migration(migrations.Migration):
+    initial = True
+    
+    dependencies = [
+    ]
+    
+    operations = [
+        migrations.CreateModel(
+            name='Student',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('first_name', models.CharField(max_length=100)),
+                ('last_name', models.CharField(max_length=100)),
+                ('email', models.EmailField(max_length=254, unique=True)),
+                ('grade', models.IntegerField()),
+                ('date_of_birth', models.DateField()),
+                ('registration_date', models.DateTimeField(auto_now_add=True)),
+            ],
+        ),
+    ]
+```
+
+This is Django's way of describing the SQL needed to create your table, but in a database-agnostic way.
+
+### Why Migrations Are Powerful
+
+1. **Database-agnostic**: Write once, run on SQLite, PostgreSQL, MySQL, etc.
+2. **Version controlled**: Migration files are stored in your repo
+3. **Deployable**: Apply the same changes to staging and production
+4. **Reversible**: Migrations can be rolled back
+
+### Important Migration Rules
+
+- **Never edit migration files manually** - They're generated by Django
+- **Never delete a migration file that has been applied** - This can break databases that have already run it
+- **Commit both models.py and migrations together** - They must stay in sync
+- **Run migrations before testing** - Your database must match your code
+
+## The `id` Field: Automatic Primary Key
+
+Notice we didn't define an `id` field in our `Student` model, but every student has one. That's because Django automatically adds an auto-incrementing primary key field to every model:
+
+```python
+id = models.AutoField(primary_key=True)
+```
+
+This is equivalent to:
+- `id SERIAL PRIMARY KEY` in PostgreSQL
+- `id INTEGER PRIMARY KEY AUTOINCREMENT` in SQLite
+
+You can override this by explicitly defining your own primary key, but the automatic `id` field is the convention for most cases.
+
+## Database Backends
+
+Django supports multiple database backends. Our Student Registration System uses SQLite by default, which:
+- Stores the entire database in a single file (`db.sqlite3`)
+- Requires no separate server process
+- Is perfect for development and small applications
+
+For production, you might switch to:
+- **PostgreSQL**: Most feature-complete, recommended for production
+- **MySQL**: Widely used, good performance
+- **Oracle**: Enterprise support
+
+Changing the database backend only requires changing `DATABASES` in `settings.py` — your models and migrations stay the same!
