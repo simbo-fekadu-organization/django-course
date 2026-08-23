@@ -74,4 +74,4 @@ text, and wire it up at `/about/` the same way. This is just reps on the
 view → URL → browser loop before templates get involved.
 
 ---
-⬅ [Previous: 03 - ORM & CRUD in the Shell](../03-orm-crud-shell/README.md) | ➡ [Next: 05 - Templates](../05-templates/README.md)
+⬅ [Previous: 03 - ORM & CRUD in the Shell](../03-orm-crud-shell/PRACTICAL.md) | ➡ [Next: 05 - Templates](../05-templates/PRACTICAL.md)

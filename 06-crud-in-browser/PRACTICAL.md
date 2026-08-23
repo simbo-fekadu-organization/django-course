@@ -130,4 +130,4 @@ same pattern as `register_student`, except the form should load with the
 existing student's data already filled in. This completes the CRUD set.
 
 ---
-⬅ [Previous: 05 - Templates](../05-templates/README.md) | ⬆ [Course home](../README.md)
+⬅ [Previous: 05 - Templates](../05-templates/PRACTICAL.md) | ⬆ [Course home](../README.md)

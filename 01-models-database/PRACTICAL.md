@@ -86,4 +86,4 @@ then run `makemigrations` and `migrate` again. Watch what Django asks you when
 you add a non-nullable field to a model that already has rows in its table.
 
 ---
-⬅ [Previous: 00 - Setup](../00-setup/README.md) | ➡ [Next: 02 - Admin Panel](../02-admin-panel/README.md)
+⬅ [Previous: 00 - Setup](../00-setup/PRACTICAL.md) | ➡ [Next: 02 - Admin Panel](../02-admin-panel/PRACTICAL.md)

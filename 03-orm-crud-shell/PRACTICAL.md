@@ -111,4 +111,4 @@ names, then bulk-updates them all to grade 5. Do it in two steps — print first
 update second — so you can see what you're about to change before you change it.
 
 ---
-⬅ [Previous: 02 - Admin Panel](../02-admin-panel/README.md) | ➡ [Next: 04 - Views & URLs](../04-views-urls/README.md)
+⬅ [Previous: 02 - Admin Panel](../02-admin-panel/PRACTICAL.md) | ➡ [Next: 04 - Views & URLs](../04-views-urls/PRACTICAL.md)

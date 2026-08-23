@@ -64,4 +64,4 @@ the previous lesson's exercise) and see the error Django gives you. Then fix it
 by adding the field for real.
 
 ---
-⬅ [Previous: 01 - Models & Database](../01-models-database/README.md) | ➡ [Next: 03 - ORM & CRUD in the Shell](../03-orm-crud-shell/README.md)
+⬅ [Previous: 01 - Models & Database](../01-models-database/PRACTICAL.md) | ➡ [Next: 03 - ORM & CRUD in the Shell](../03-orm-crud-shell/PRACTICAL.md)

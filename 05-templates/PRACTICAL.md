@@ -106,4 +106,4 @@ Add a column to the table for `registration_date`, formatted with Django's
 `date` filter: `{{ student.registration_date|date:"M d, Y" }}`.
 
 ---
-⬅ [Previous: 04 - Views & URLs](../04-views-urls/README.md) | ➡ [Next: 06 - CRUD in the Browser](../06-crud-in-browser/README.md)
+⬅ [Previous: 04 - Views & URLs](../04-views-urls/PRACTICAL.md) | ➡ [Next: 06 - CRUD in the Browser](../06-crud-in-browser/PRACTICAL.md)

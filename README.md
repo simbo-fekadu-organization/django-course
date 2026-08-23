@@ -2,7 +2,7 @@
 
 A hands-on Django course taught by building one real project: a **Student
 Registration System**. Each lesson is a self-contained folder with its own
-`README.md` — read it top to bottom, run every command as you go, and check
+`PRACTICAL.md` — read it top to bottom, run every command as you go, and check
 the "Checkpoint" before moving to the next lesson.
 
 **What is Django?** Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. It handles much of the hassle of web development, so you can focus on writing your app without reinventing the wheel.
@@ -27,13 +27,13 @@ By the end, you'll have built:
 
 | # | Lesson | What you'll build | Est. Time |
 |---|---|---|---|
-| 00 | [Setup](00-setup/README.md) | A running Django project and app | 20-30 min |
-| 01 | [Models & Database](01-models-database/README.md) | The `Student` model and its database table | 30-40 min |
-| 02 | [Admin Panel](02-admin-panel/README.md) | A working `/admin/` dashboard | 20-30 min |
-| 03 | [ORM & CRUD in the Shell](03-orm-crud-shell/README.md) | Create/Read/Update/Delete via Python (no browser) | 30-45 min |
-| 04 | [Views & URLs](04-views-urls/README.md) | Your first browser-served page | 30-40 min |
-| 05 | [Templates](05-templates/README.md) | A real HTML page listing all students | 30-45 min |
-| 06 | [CRUD in the Browser](06-crud-in-browser/README.md) | A register form and delete link, fully working | 45-60 min |
+| 00 | [Setup](00-setup/PRACTICAL.md) | A running Django project and app | 20-30 min |
+| 01 | [Models & Database](01-models-database/PRACTICAL.md) | The `Student` model and its database table | 30-40 min |
+| 02 | [Admin Panel](02-admin-panel/PRACTICAL.md) | A working `/admin/` dashboard | 20-30 min |
+| 03 | [ORM & CRUD in the Shell](03-orm-crud-shell/PRACTICAL.md) | Create/Read/Update/Delete via Python (no browser) | 30-45 min |
+| 04 | [Views & URLs](04-views-urls/PRACTICAL.md) | Your first browser-served page | 30-40 min |
+| 05 | [Templates](05-templates/PRACTICAL.md) | A real HTML page listing all students | 30-45 min |
+| 06 | [CRUD in the Browser](06-crud-in-browser/PRACTICAL.md) | A register form and delete link, fully working | 45-60 min |
 
 ## Capstone
 After completing all lessons, extend the system with features like:

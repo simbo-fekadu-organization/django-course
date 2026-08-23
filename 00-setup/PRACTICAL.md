@@ -72,4 +72,4 @@ delete the folder and remove it from settings again. This is good practice for
 recognizing what "app not registered" errors look like later.
 
 ---
-⬅ [Course home](../README.md) | ➡ [Next: 01 - Models & Database](../01-models-database/README.md)
+⬅ [Course home](../README.md) | ➡ [Next: 01 - Models & Database](../01-models-database/PRACTICAL.md)
